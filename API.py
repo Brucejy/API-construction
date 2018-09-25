@@ -1,19 +1,19 @@
 import os
 import tornado.web
 import tornado.ioloop
+import json
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write("Hello, SELECT\n")
+        jj = {"a": 2, "b": 3}
+        self.write(jj)
 
     def post(self):
-        self.write("Hello, ADD\n")
-
-    def put(self):
-        self.write("Hello, UPDATE\n")
-
-    def delete(self):
-        self.write("Hello, DELETE\n")
+        a = self.get_argument('a')
+        b = self.get_argument('b')
+        sum = int(a) + int(b)
+        sum_json = json.dumps(sum)
+        self.write(sum_json)
 
 application = tornado.web.Application([
     (r"/", MainHandler),
