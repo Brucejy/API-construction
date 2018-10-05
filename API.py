@@ -9,6 +9,7 @@ class MainHandler(tornado.web.RequestHandler):
         conn = pymysql.connect(host='localhost',port=3306,user='bruce',password='#Gg10106')
         with conn.cursor() as cursor:
             cursor.execute('create database new_db')
+            cursor.execute('use new_db')
             cursor.execute('create table students (id int unsigned not null auto_increment primary key,name char(8) not null,sex char(6) not null)')
             cursor.execute('insert into students values (6,"Chang","male")')
             cursor.execute('insert into students values (3,"Lin","female")')
