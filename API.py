@@ -1,23 +1,28 @@
-import os
 import tornado.web
 import tornado.ioloop
-import json
+import pymysql
+import numpy as np
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        jj = {"a": 2, "b": 3}
-        self.write(jj)
-
-    def post(self):
-        a = self.get_argument('a')
-        b = self.get_argument('b')
-        sum = int(a) + int(b)
-        sum_json = json.dumps(sum)
-        self.write(sum_json)
-
+        conn = pymysql.connect(host='localhost',port=3306,user='bruce',password='#Gg10106')
+        with conn.cursor() as cursor:
+            cursor.execute('create database new_db')
+            cursor.execute('create table students (id int unsigned not null auto_increment primary key,name char(8) not null,sex char(6) not null)')
+            cursor.execute('insert into students values (6,"Chang","male")')
+            cursor.execute('insert into students values (3,"Lin","female")')
+            cursor.execute('delete from students where id =6')
+            cursor.execute('update students set name ="Wu" where id =3')
+            cursor.execute('select * from students')
+            result = cursor.fetchall()  
+        self.write(str(np.array(result)))
+     
+        
 application = tornado.web.Application([
     (r"/", MainHandler),
 ])
+
 
 if __name__ == "__main__":
     application.listen(8888)
