@@ -15,9 +15,9 @@ class MainHandler(tornado.web.RequestHandler):
             cursor.execute('insert into students values (3,"Lin","female")')
             cursor.execute('delete from students where id =6')
             cursor.execute('update students set name ="Wu" where id =3')
-            new_db.commit()
             cursor.execute('select * from students')
             result = cursor.fetchall()  
+        conn.commit()
         self.write(str(np.array(result)))
      
         
